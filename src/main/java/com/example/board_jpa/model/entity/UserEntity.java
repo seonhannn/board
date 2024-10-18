@@ -1,6 +1,5 @@
 package com.example.board_jpa.model.entity;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -16,27 +15,24 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserEntity {
     @Id
-    @Column(unique = true, nullable = false, length = 100)
+    @Column(unique = true, nullable = false)
     private String userId;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = true)
     private String refreshToken;
 
-    @Column(nullable = true)
-    private String userStatusCode;
+    private String statusCode;
 
-    @Column(nullable = true)
     private String regDate;
 
-    @Column(nullable = true)
     private String regId;
 
-    @Column(nullable = true)
     private String upDate;
 
-    @Column(nullable = true)
     private String upId;
 }

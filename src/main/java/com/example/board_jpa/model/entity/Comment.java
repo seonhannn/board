@@ -12,28 +12,25 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
-public class Board {
+@Builder
+public class Comment {
     @Id
     @GeneratedValue
-    private Long boardId;
+    @Column(unique = true, nullable = false)
+    private Long commentId;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @Column(nullable = false)
-    private String title;
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "board_id")
+    private Board board;
 
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
     private String statusCode;
-
-    private boolean isUser;
-
-    private String password;
 
     @Builder.Default
     private LocalDateTime regDate = LocalDateTime.now();

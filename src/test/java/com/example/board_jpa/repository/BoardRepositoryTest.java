@@ -55,8 +55,8 @@ class BoardRepositoryTest {
         Board board = Board.builder()
                 .title("test")
                 .content("test content")
-                .boardStatusCode("ACTIVATE")
-                .userId(user)
+                .statusCode("ACTIVATE")
+                .user(user)
                 .build();
 
         boardRepository.saveAndFlush(board);
@@ -81,15 +81,15 @@ class BoardRepositoryTest {
         Board board = Board.builder()
                 .title("test")
                 .content("test content")
-                .boardStatusCode("ACTIVATE")
-                .userId(user)
+                .statusCode("ACTIVATE")
+                .user(user)
                 .build();
 
         boardRepository.saveAndFlush(board);
-        List<Board> boardList = boardRepository.findBoardsByBoardStatusCode("ACTIVATE");
+        List<Board> boardList = boardRepository.findBoardsByStatusCode("ACTIVATE");
         System.out.println(boardList);
 
-        assertTrue(boardList.get(0).getBoardStatusCode().equals("ACTIVATE"));
+        assertTrue(boardList.get(0).getStatusCode().equals("ACTIVATE"));
     }
 
     @DisplayName("ACTIVATE 게시글 목록 전체 조회 및 DTO 변환 테스트")
@@ -107,18 +107,18 @@ class BoardRepositoryTest {
         Board board = Board.builder()
                 .title("test")
                 .content("test content")
-                .boardStatusCode("ACTIVATE")
-                .userId(user)
+                .statusCode("ACTIVATE")
+                .user(user)
                 .build();
 
         boardRepository.saveAndFlush(board);
-        List<Board> boardList = boardRepository.findBoardsByBoardStatusCode("ACTIVATE");
+        List<Board> boardList = boardRepository.findBoardsByStatusCode("ACTIVATE");
         System.out.println(boardList);
 
-        List<BoardResponse> boardListResponses = boardRepository.findBoardsByBoardStatusCode("ACTIVATE").stream()
+        List<BoardResponse> boardListResponses = boardRepository.findBoardsByStatusCode("ACTIVATE").stream()
                 .map(boardItem -> BoardResponse.builder()
                         .title(boardItem.getTitle())
-                        .userId(boardItem.getUserId().getUserId())
+                        .userId(boardItem.getUser().getUserId())
                         .regDate(boardItem.getRegDate())
                         .build())
                 .collect(Collectors.toList());
@@ -131,7 +131,7 @@ class BoardRepositoryTest {
 //                    .build();
 //        }
 
-        assertTrue(boardList.get(0).getBoardStatusCode().equals("ACTIVATE"));
+        assertTrue(boardList.get(0).getStatusCode().equals("ACTIVATE"));
     }
 
     @DisplayName("게시글 생성 테스트")
@@ -140,6 +140,7 @@ class BoardRepositoryTest {
         // save user
         UserEntity user = UserEntity.builder()
                 .userId("tester")
+                .name("tester")
                 .password("pwd1234")
                 .build();
 
@@ -149,12 +150,12 @@ class BoardRepositoryTest {
         Board board = Board.builder()
                 .title("test")
                 .content("test content")
-                .boardStatusCode("ACTIVATE")
-                .userId(user)
+                .statusCode("ACTIVATE")
+                .user(user)
                 .build();
 
         boardRepository.saveAndFlush(board);
-        List<Board> boardList = boardRepository.findBoardsByBoardStatusCode("ACTIVATE");
+        List<Board> boardList = boardRepository.findBoardsByStatusCode("ACTIVATE");
         assertNotNull(boardList);
         assertEquals(boardList.size(), 1);
     }
@@ -174,12 +175,12 @@ class BoardRepositoryTest {
         Board board = Board.builder()
                 .title("test")
                 .content("test content")
-                .boardStatusCode("ACTIVATE")
-                .userId(user)
+                .statusCode("ACTIVATE")
+                .user(user)
                 .build();
 
         boardRepository.saveAndFlush(board);
-        List<Board> boardList = boardRepository.findBoardsByBoardStatusCode("ACTIVATE");
+        List<Board> boardList = boardRepository.findBoardsByStatusCode("ACTIVATE");
         assertNotNull(boardList);
         assertEquals(boardList.size(), 1);
 
@@ -192,7 +193,7 @@ class BoardRepositoryTest {
         boardRepository.saveAndFlush(updateBoard);
 
         // find updated board
-        Optional<Board> updatedBoard = boardRepository.findById(board.getId());
+        Optional<Board> updatedBoard = boardRepository.findById(board.getBoardId());
 
         // assert
         assertEquals(updateBoard.getTitle(), updatedBoard.get().getTitle());
@@ -202,7 +203,7 @@ class BoardRepositoryTest {
     @DisplayName("게시글 삭제 테스트")
     @Test
     void deleteBoardTest() {
-// save user
+        // save user
         UserEntity user = UserEntity.builder()
                 .userId("tester")
                 .password("pwd1234")
@@ -214,17 +215,17 @@ class BoardRepositoryTest {
         Board board = Board.builder()
                 .title("test")
                 .content("test content")
-                .boardStatusCode("ACTIVATE")
-                .userId(user)
+                .statusCode("ACTIVATE")
+                .user(user)
                 .build();
 
         boardRepository.saveAndFlush(board);
-        List<Board> boardList = boardRepository.findBoardsByBoardStatusCode("ACTIVATE");
+        List<Board> boardList = boardRepository.findBoardsByStatusCode("ACTIVATE");
         assertNotNull(boardList);
         assertEquals(boardList.size(), 1);
 
         // delete
-        boardRepository.deleteById(board.getId());
-        assertEquals(0, boardRepository.findBoardsByBoardStatusCode("ACTIVATE").size());
+        boardRepository.deleteById(board.getBoardId());
+        assertEquals(0, boardRepository.findBoardsByStatusCode("ACTIVATE").size());
     }
 }

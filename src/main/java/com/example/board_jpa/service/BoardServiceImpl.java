@@ -3,7 +3,6 @@ package com.example.board_jpa.service;
 import com.example.board_jpa.model.entity.Board;
 import com.example.board_jpa.model.response.BoardResponse;
 import com.example.board_jpa.repository.BoardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,18 +17,17 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardResponse> findBoardListByStatusCode(String boardStatusCode) {
-//        return boardRepository.findBoardsByBoardStatusCode(boardStatusCode);
-        return boardRepository.findBoardsByBoardStatusCode(boardStatusCode).stream().map(boardItem -> BoardResponse.builder()
+    public List<BoardResponse> findBoardsByStatusCode(String statusCode) {
+        return boardRepository.findBoardsByStatusCode(statusCode).stream().map(boardItem -> BoardResponse.builder()
                 .title(boardItem.getTitle())
-                .userId(boardItem.getUserId().getUserId())
+                .userId(boardItem.getUser().getUserId())
                 .regDate(boardItem.getRegDate())
                 .build()).toList();
     }
 
     @Override
-    public Board findBoardById(Long id) {
-        return boardRepository.findById(id).orElse(null);
+    public Board findBoardById(Long boardId) {
+        return boardRepository.findById(boardId).orElse(null);
     }
 
     @Override
@@ -39,7 +37,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void updateBoard(Board updateBoard) {
-        Board existingBoard = findBoardById(updateBoard.getId());
+        Board existingBoard = findBoardById(updateBoard.getBoardId());
 
         if(!updateBoard.getTitle().isBlank()) {
             existingBoard.setTitle(updateBoard.getTitle());
@@ -53,7 +51,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void deleteBoard(Long id) {
-        boardRepository.deleteById(id);
+    public void deleteBoard(Long boardId) {
+        boardRepository.deleteById(boardId);
     }
 }

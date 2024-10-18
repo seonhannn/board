@@ -15,9 +15,9 @@ import java.util.List;
  *   상태코드 활성화만 조회
  * */
 public interface BoardService {
-    List<BoardResponse> findBoardListByStatusCode(String boardStatusCode);
-    Board findBoardById(Long id);
+    List<BoardResponse> findBoardsByStatusCode(String statusCode);
+    Board findBoardById(Long boardId);
     void saveBoard(Board board);
     void updateBoard(Board board);
-    void deleteBoard(Long id);
+    void deleteBoard(Long boardId);
 }
